@@ -1,6 +1,6 @@
 # ServiceDesk
 
-A demo helpdesk/ITSM SaaS product (Freshservice-style) used for  analytics-platform demos. It replaces the old `heapworks` project — a mix of a React admin dashboard and disconnected static marketing HTML — with a single, cohesive Express + EJS app: a long-scroll marketing site plus a logged-in app shell for Tickets, Problems, Changes, and a Knowledge Base.
+A demo helpdesk/ITSM SaaS product (Freshservice-style) used for   analytics-platform demos. It replaces the old `heapworks` project — a mix of a React admin dashboard and disconnected static marketing HTML — with a single, cohesive Express + EJS app: a long-scroll marketing site plus a logged-in app shell for Tickets, Problems, Changes, and a Knowledge Base.
 
 The architecture deliberately mirrors another demo project (`ecommerce-main`): Express + EJS views composed from `partials/`, `better-sqlite3` for data (no ORM), `cookie-session` + `connect-flash`, and route-level `requireAuth` / `requireAgent` / `requireAdmin` middleware.
 
