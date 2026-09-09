@@ -1,0 +1,34 @@
+<%- include('../partials/head', { title: problem.title }) %>
+<%- include('../partials/nav') %>
+<main>
+  <section class="sd-portal-header">
+    <div class="sd-portal-header-inner">
+      <h1>#<%= problem.id %> &mdash; <%= problem.title %></h1>
+      <span class="sd-mock-pill sd-pill-<%= problem.status %>"><%= problem.status %></span>
+    </div>
+  </section>
+  <section class="sd-portal-body">
+    <div class="sd-portal-body-inner">
+      <%- include('../partials/flash') %>
+      <div class="sd-ticket-description">
+        <h3>Description</h3>
+        <p><%= problem.description %></p>
+        <span class="sd-ticket-submeta">Logged on <%= problem.created_at %></span>
+      </div>
+      <% if (isAgent) { %>
+        <form method="POST" action="/problems/<%= problem.id %>/update" class="sd-form sd-narrow">
+          <div class="sd-form-row">
+            <label for="status">Status</label>
+            <select id="status" name="status">
+              <% ['open','investigating','resolved'].forEach(function(s) { %>
+                <option value="<%= s %>" <%= problem.status === s ? 'selected' : '' %>><%= s %></option>
+              <% }) %>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-sd-primary">Save changes</button>
+        </form>
+      <% } %>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>

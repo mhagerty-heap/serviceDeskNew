@@ -1,0 +1,53 @@
+<%- include('../partials/head', { title: 'Dashboard' }) %>
+<%- include('../partials/nav') %>
+<main>
+  <section class="sd-portal-header">
+    <div class="sd-portal-header-inner">
+      <h1>Welcome back, <%= currentUser.name %></h1>
+      <p><%= isAgent ? 'Here is what your team is working on today.' : 'Here is the status of your support requests.' %></p>
+    </div>
+  </section>
+
+  <section class="sd-portal-body">
+    <div class="sd-portal-body-inner">
+      <%- include('../partials/flash') %>
+
+      <div class="sd-showcase-cards sd-portal-stats">
+        <div class="sd-showcase-card"><strong><%= stats.open %></strong><span>Open</span></div>
+        <div class="sd-showcase-card"><strong><%= stats.pending %></strong><span>Pending</span></div>
+        <div class="sd-showcase-card"><strong><%= stats.resolved %></strong><span>Resolved</span></div>
+        <div class="sd-showcase-card"><strong><%= stats.total %></strong><span>Total</span></div>
+      </div>
+
+      <div class="sd-portal-actions">
+        <a href="/tickets/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New ticket</a>
+        <a href="/tickets" class="btn btn-sd-outline">View all tickets</a>
+        <% if (isAgent) { %><a href="/admin" class="btn btn-sd-outline">Go to admin</a><% } %>
+      </div>
+
+      <h2 class="sd-portal-subhead"><%= isAgent ? 'Recent tickets' : 'My recent tickets' %></h2>
+      <div class="sd-table-wrap">
+        <table class="sd-table">
+          <thead>
+            <tr><th>Subject</th><th>Status</th><th>Priority</th><th>Requester</th><th>Updated</th></tr>
+          </thead>
+          <tbody>
+            <% recentTickets.forEach(function(t) { %>
+              <tr onclick="window.location='/tickets/<%= t.id %>'">
+                <td><%= t.subject %></td>
+                <td><span class="sd-mock-pill sd-pill-<%= t.status %>"><%= t.status %></span></td>
+                <td><span class="sd-mock-pill sd-pill-<%= t.priority %>"><%= t.priority %></span></td>
+                <td><%= t.requester_name %></td>
+                <td><%= t.updated_at %></td>
+              </tr>
+            <% }) %>
+            <% if (recentTickets.length === 0) { %>
+              <tr><td colspan="5" class="sd-table-empty">No tickets yet.</td></tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>

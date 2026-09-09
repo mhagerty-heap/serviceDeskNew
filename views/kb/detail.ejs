@@ -1,0 +1,17 @@
+<%- include('../partials/head', { title: article.title }) %>
+<%- include('../partials/nav') %>
+<main>
+  <section class="sd-page-header">
+    <div class="sd-page-header-inner">
+      <span class="sd-kb-category"><%= article.category || 'General' %></span>
+      <h1><%= article.title %></h1>
+    </div>
+  </section>
+  <section class="sd-portal-body">
+    <div class="sd-portal-body-inner sd-narrow sd-kb-article">
+      <p><%= article.body %></p>
+      <a href="/kb" class="btn btn-sd-outline">Back to Knowledge Base</a>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>

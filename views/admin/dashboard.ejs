@@ -1,0 +1,50 @@
+<%- include('../partials/admin-head', { title: 'Dashboard' }) %>
+<% const activePage = 'dashboard'; %>
+<%- include('sidebar') %>
+  <div class="sd-admin-topbar">
+    <h1>Dashboard</h1>
+  </div>
+  <div class="sd-admin-content">
+    <%- include('../partials/flash') %>
+
+    <div class="sd-admin-stats">
+      <div class="sd-admin-stat-card"><i class="bi bi-ticket-perforated"></i><div><strong><%= stats.openTickets %></strong><span>Open tickets</span></div></div>
+      <div class="sd-admin-stat-card"><i class="bi bi-calendar-day"></i><div><strong><%= stats.todayTickets %></strong><span>Opened today</span></div></div>
+      <div class="sd-admin-stat-card"><i class="bi bi-stopwatch"></i><div><strong><%= stats.avgResolutionHours %>h</strong><span>Avg. resolution time</span></div></div>
+      <div class="sd-admin-stat-card"><i class="bi bi-people"></i><div><strong><%= stats.agentCount %></strong><span>Agents</span></div></div>
+    </div>
+
+    <div class="sd-admin-grid">
+      <div class="sd-admin-panel">
+        <h3>Recent tickets</h3>
+        <table class="sd-table">
+          <thead><tr><th>Subject</th><th>Status</th><th>Priority</th><th>Requester</th></tr></thead>
+          <tbody>
+            <% recentTickets.forEach(function(t) { %>
+              <tr onclick="window.location='/admin/tickets/<%= t.id %>'">
+                <td><%= t.subject %></td>
+                <td><span class="sd-mock-pill sd-pill-<%= t.status %>"><%= t.status %></span></td>
+                <td><span class="sd-mock-pill sd-pill-<%= t.priority %>"><%= t.priority %></span></td>
+                <td><%= t.requester_name %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sd-admin-panel">
+        <h3>SLA risk</h3>
+        <% if (slaRisk.length === 0) { %>
+          <p class="sd-table-empty">No tickets at risk right now.</p>
+        <% } %>
+        <ul class="sd-admin-list">
+          <% slaRisk.forEach(function(t) { %>
+            <li onclick="window.location='/admin/tickets/<%= t.id %>'">
+              <span class="sd-mock-pill sd-pill-urgent">Urgent</span> <%= t.subject %>
+            </li>
+          <% }) %>
+        </ul>
+      </div>
+    </div>
+  </div>
+<%- include('../partials/admin-scripts') %>

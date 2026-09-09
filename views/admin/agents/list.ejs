@@ -1,0 +1,24 @@
+<%- include('../../partials/admin-head', { title: 'Agents' }) %>
+<% const activePage = 'agents'; %>
+<%- include('../sidebar') %>
+  <div class="sd-admin-topbar">
+    <h1>Agents</h1>
+    <a href="/admin/agents/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New agent</a>
+  </div>
+  <div class="sd-admin-content">
+    <%- include('../../partials/flash') %>
+    <table class="sd-table">
+      <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th></tr></thead>
+      <tbody>
+        <% agents.forEach(function(a) { %>
+          <tr>
+            <td><%= a.name %></td>
+            <td><%= a.email %></td>
+            <td><span class="sd-mock-pill sd-pill-medium"><%= a.role %></span></td>
+            <td><%= a.created_at %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+<%- include('../../partials/admin-scripts') %>

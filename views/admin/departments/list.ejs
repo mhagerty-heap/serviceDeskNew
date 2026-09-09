@@ -1,0 +1,29 @@
+<%- include('../../partials/admin-head', { title: 'Departments' }) %>
+<% const activePage = 'departments'; %>
+<%- include('../sidebar') %>
+  <div class="sd-admin-topbar"><h1>Departments</h1></div>
+  <div class="sd-admin-content">
+    <%- include('../../partials/flash') %>
+    <div class="sd-admin-grid">
+      <div class="sd-admin-panel">
+        <h3>Existing departments</h3>
+        <ul class="sd-admin-list">
+          <% departments.forEach(function(d) { %>
+            <li><%= d.name %> <span class="sd-badge-count"><%= d.ticketCount %> tickets</span></li>
+          <% }) %>
+          <% if (departments.length === 0) { %><li class="sd-table-empty">No departments yet.</li><% } %>
+        </ul>
+      </div>
+      <div class="sd-admin-panel">
+        <h3>Add department</h3>
+        <form method="POST" action="/admin/departments" class="sd-form">
+          <div class="sd-form-row">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <button type="submit" class="btn btn-sd-primary">Add department</button>
+        </form>
+      </div>
+    </div>
+  </div>
+<%- include('../../partials/admin-scripts') %>

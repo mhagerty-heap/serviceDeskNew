@@ -1,0 +1,11 @@
+<% if (typeof flash !== 'undefined' && flash) { %>
+  <% (flash.success || []).forEach(function(msg) { %>
+    <div class="sd-flash sd-flash-success"><i class="bi bi-check-circle-fill"></i> <%= msg %></div>
+  <% }) %>
+  <% (flash.error || []).forEach(function(msg) { %>
+    <div class="sd-flash sd-flash-error"><i class="bi bi-exclamation-triangle-fill"></i> <%= msg %></div>
+  <% }) %>
+  <% (flash.info || []).forEach(function(msg) { %>
+    <div class="sd-flash sd-flash-info"><i class="bi bi-info-circle-fill"></i> <%= msg %></div>
+  <% }) %>
+<% } %>

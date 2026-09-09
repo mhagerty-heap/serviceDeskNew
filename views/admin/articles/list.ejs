@@ -1,0 +1,24 @@
+<%- include('../../partials/admin-head', { title: 'Knowledge Base' }) %>
+<% const activePage = 'articles'; %>
+<%- include('../sidebar') %>
+  <div class="sd-admin-topbar">
+    <h1>Knowledge Base</h1>
+    <a href="/admin/articles/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New article</a>
+  </div>
+  <div class="sd-admin-content">
+    <%- include('../../partials/flash') %>
+    <table class="sd-table">
+      <thead><tr><th>Title</th><th>Category</th><th>Published</th></tr></thead>
+      <tbody>
+        <% articles.forEach(function(a) { %>
+          <tr onclick="window.location='/kb/<%= a.slug %>'">
+            <td><%= a.title %></td>
+            <td><%= a.category || '&mdash;' %></td>
+            <td><%= a.published_at %></td>
+          </tr>
+        <% }) %>
+        <% if (articles.length === 0) { %><tr><td colspan="3" class="sd-table-empty">No articles yet.</td></tr><% } %>
+      </tbody>
+    </table>
+  </div>
+<%- include('../../partials/admin-scripts') %>

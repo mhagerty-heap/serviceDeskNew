@@ -1,0 +1,59 @@
+<%- include('partials/head', { title: 'Pricing' }) %>
+<%- include('partials/nav') %>
+<main>
+  <%- include('partials/flash') %>
+  <section class="sd-page-header">
+    <div class="sd-page-header-inner">
+      <h1>Simple, transparent pricing</h1>
+      <p>Every plan includes unlimited tickets. Pay only for active agents.</p>
+    </div>
+  </section>
+
+  <section class="sd-pricing-teaser">
+    <div class="sd-pricing-teaser-inner">
+      <div class="sd-pricing-grid">
+        <div class="sd-pricing-card">
+          <h3>Starter</h3>
+          <div class="sd-price"><span>$15</span>/agent/mo</div>
+          <p>For small teams getting off email and spreadsheets.</p>
+          <ul>
+            <li><i class="bi bi-check2"></i> Unlimited tickets</li>
+            <li><i class="bi bi-check2"></i> Email &amp; portal support</li>
+            <li><i class="bi bi-check2"></i> Basic automation rules</li>
+            <li><i class="bi bi-check2"></i> 5 knowledge base categories</li>
+          </ul>
+          <a href="/register" class="btn btn-sd-outline w-100">Start free trial</a>
+        </div>
+        <div class="sd-pricing-card sd-pricing-featured">
+          <span class="sd-pricing-tag">Most popular</span>
+          <h3>Growth</h3>
+          <div class="sd-price"><span>$39</span>/agent/mo</div>
+          <p>For growing support &amp; IT teams that need SLAs and reporting.</p>
+          <ul>
+            <li><i class="bi bi-check2"></i> Everything in Starter</li>
+            <li><i class="bi bi-check2"></i> SLA management &amp; escalations</li>
+            <li><i class="bi bi-check2"></i> Unlimited knowledge base</li>
+            <li><i class="bi bi-check2"></i> Advanced reporting &amp; dashboards</li>
+            <li><i class="bi bi-check2"></i> Slack, Teams &amp; Jira integrations</li>
+          </ul>
+          <a href="/register" class="btn btn-sd-primary w-100">Start free trial</a>
+        </div>
+        <div class="sd-pricing-card">
+          <h3>Enterprise</h3>
+          <div class="sd-price"><span>Custom</span></div>
+          <p>For large orgs with change management &amp; compliance needs.</p>
+          <ul>
+            <li><i class="bi bi-check2"></i> Everything in Growth</li>
+            <li><i class="bi bi-check2"></i> Problem &amp; change management</li>
+            <li><i class="bi bi-check2"></i> SSO, audit logs &amp; custom roles</li>
+            <li><i class="bi bi-check2"></i> Dedicated success manager</li>
+          </ul>
+          <a href="/contact" class="btn btn-sd-outline w-100">Talk to sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%- include('partials/home-cta') %>
+</main>
+<%- include('partials/footer') %>

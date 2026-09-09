@@ -1,0 +1,23 @@
+<%- include('../../partials/admin-head', { title: 'New Article' }) %>
+<% const activePage = 'articles'; %>
+<%- include('../sidebar') %>
+  <div class="sd-admin-topbar"><h1>New article</h1></div>
+  <div class="sd-admin-content">
+    <%- include('../../partials/flash') %>
+    <form method="POST" action="/admin/articles" class="sd-form sd-narrow">
+      <div class="sd-form-row">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" required>
+      </div>
+      <div class="sd-form-row">
+        <label for="category">Category</label>
+        <input type="text" id="category" name="category" placeholder="e.g. Account, Billing, IT">
+      </div>
+      <div class="sd-form-row">
+        <label for="body">Body</label>
+        <textarea id="body" name="body" rows="8" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-sd-primary">Publish article</button>
+    </form>
+  </div>
+<%- include('../../partials/admin-scripts') %>

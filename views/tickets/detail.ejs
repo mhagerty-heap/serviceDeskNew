@@ -1,0 +1,94 @@
+<%- include('../partials/head', { title: 'Ticket #' + ticket.id }) %>
+<%- include('../partials/nav') %>
+<main>
+  <section class="sd-portal-header">
+    <div class="sd-portal-header-inner">
+      <h1>#<%= ticket.id %> &mdash; <%= ticket.subject %></h1>
+      <div class="sd-ticket-meta">
+        <span class="sd-mock-pill sd-pill-<%= ticket.status %>"><%= ticket.status %></span>
+        <span class="sd-mock-pill sd-pill-<%= ticket.priority %>"><%= ticket.priority %></span>
+        <span><%= ticket.department_name || 'No department' %></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="sd-portal-body">
+    <div class="sd-portal-body-inner">
+      <%- include('../partials/flash') %>
+
+      <div class="sd-ticket-grid">
+        <div class="sd-ticket-main">
+          <div class="sd-ticket-description">
+            <h3>Description</h3>
+            <p><%= ticket.description %></p>
+            <span class="sd-ticket-submeta">Opened by <%= ticket.requester_name %> on <%= ticket.created_at %></span>
+          </div>
+
+          <h3 class="sd-portal-subhead">Activity</h3>
+          <div class="sd-comment-list">
+            <% comments.forEach(function(c) { %>
+              <div class="sd-comment <%= c.is_internal_note ? 'sd-comment-internal' : '' %>">
+                <div class="sd-avatar sd-avatar-sm"><%= c.author_name.slice(0,2).toUpperCase() %></div>
+                <div class="sd-comment-body">
+                  <div class="sd-comment-header">
+                    <strong><%= c.author_name %></strong>
+                    <% if (c.is_internal_note) { %><span class="sd-mock-pill sd-pill-internal">Internal note</span><% } %>
+                    <span><%= c.created_at %></span>
+                  </div>
+                  <p><%= c.body %></p>
+                </div>
+              </div>
+            <% }) %>
+            <% if (comments.length === 0) { %><p class="sd-table-empty">No activity yet.</p><% } %>
+          </div>
+
+          <form method="POST" action="/tickets/<%= ticket.id %>/comments" class="sd-form">
+            <div class="sd-form-row">
+              <label for="body">Add a reply</label>
+              <textarea id="body" name="body" rows="3" required></textarea>
+            </div>
+            <% if (isAgent) { %>
+              <label class="sd-checkbox-row"><input type="checkbox" name="is_internal_note" value="1"> Internal note (not visible to requester)</label>
+            <% } %>
+            <button type="submit" class="btn btn-sd-primary">Post reply</button>
+          </form>
+        </div>
+
+        <% if (isAgent) { %>
+        <div class="sd-ticket-sidebar">
+          <h3>Manage ticket</h3>
+          <form method="POST" action="/tickets/<%= ticket.id %>/update" class="sd-form">
+            <div class="sd-form-row">
+              <label for="status">Status</label>
+              <select id="status" name="status">
+                <% ['open','pending','resolved','closed'].forEach(function(s) { %>
+                  <option value="<%= s %>" <%= ticket.status === s ? 'selected' : '' %>><%= s %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="sd-form-row">
+              <label for="priority_update">Priority</label>
+              <select id="priority_update" name="priority">
+                <% ['low','medium','high','urgent'].forEach(function(p) { %>
+                  <option value="<%= p %>" <%= ticket.priority === p ? 'selected' : '' %>><%= p %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="sd-form-row">
+              <label for="assignee_id">Assignee</label>
+              <select id="assignee_id" name="assignee_id">
+                <option value="">Unassigned</option>
+                <% agents.forEach(function(a) { %>
+                  <option value="<%= a.id %>" <%= String(ticket.assignee_id) === String(a.id) ? 'selected' : '' %>><%= a.name %></option>
+                <% }) %>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-sd-primary w-100">Save changes</button>
+          </form>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>

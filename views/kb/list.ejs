@@ -1,0 +1,30 @@
+<%- include('../partials/head', { title: 'Knowledge Base' }) %>
+<%- include('../partials/nav') %>
+<main>
+  <section class="sd-page-header">
+    <div class="sd-page-header-inner">
+      <h1>Knowledge Base</h1>
+      <p>Answers to the questions our support team hears every day.</p>
+      <form method="GET" action="/kb" class="sd-kb-search">
+        <input type="text" name="q" placeholder="Search articles..." value="<%= q || '' %>">
+        <button type="submit" class="btn btn-sd-primary">Search</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="sd-portal-body">
+    <div class="sd-portal-body-inner">
+      <div class="sd-kb-grid">
+        <% articles.forEach(function(a) { %>
+          <a class="sd-kb-card" href="/kb/<%= a.slug %>">
+            <span class="sd-kb-category"><%= a.category || 'General' %></span>
+            <h3><%= a.title %></h3>
+            <p><%= a.body.slice(0, 110) %>&hellip;</p>
+          </a>
+        <% }) %>
+        <% if (articles.length === 0) { %><p class="sd-table-empty">No articles found.</p><% } %>
+      </div>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>

@@ -1,0 +1,36 @@
+<%- include('../partials/head', { title: 'Problems' }) %>
+<%- include('../partials/nav') %>
+<main>
+  <section class="sd-portal-header">
+    <div class="sd-portal-header-inner">
+      <h1>Problems</h1>
+      <p>Root-cause records grouping related tickets.</p>
+    </div>
+  </section>
+  <section class="sd-portal-body">
+    <div class="sd-portal-body-inner">
+      <%- include('../partials/flash') %>
+      <% if (isAgent) { %>
+        <div class="sd-portal-actions">
+          <a href="/problems/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New problem</a>
+        </div>
+      <% } %>
+      <div class="sd-table-wrap">
+        <table class="sd-table">
+          <thead><tr><th>Title</th><th>Status</th><th>Opened</th></tr></thead>
+          <tbody>
+            <% problems.forEach(function(p) { %>
+              <tr onclick="window.location='/problems/<%= p.id %>'">
+                <td><%= p.title %></td>
+                <td><span class="sd-mock-pill sd-pill-<%= p.status %>"><%= p.status %></span></td>
+                <td><%= p.created_at %></td>
+              </tr>
+            <% }) %>
+            <% if (problems.length === 0) { %><tr><td colspan="3" class="sd-table-empty">No problems logged.</td></tr><% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>

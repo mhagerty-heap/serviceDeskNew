@@ -1,0 +1,45 @@
+<%- include('partials/head', { title: 'Features' }) %>
+<%- include('partials/nav') %>
+<main>
+  <%- include('partials/flash') %>
+  <section class="sd-page-header">
+    <div class="sd-page-header-inner">
+      <h1>Everything your team needs to support customers</h1>
+      <p>Ticketing, self-service, and ITSM tools that work together out of the box.</p>
+    </div>
+  </section>
+
+  <%- include('partials/home-feature-1') %>
+  <%- include('partials/home-feature-2') %>
+  <%- include('partials/home-feature-3') %>
+
+  <section class="sd-feature">
+    <div class="sd-feature-inner">
+      <div class="sd-feature-copy">
+        <span class="sd-eyebrow"><i class="bi bi-exclamation-diamond"></i> Problem &amp; change management</span>
+        <h2>Get ahead of recurring issues.</h2>
+        <p>
+          Group related tickets into a Problem record, track root cause, and plan
+          Changes with a documented risk level and schedule &mdash; full ITSM, without
+          the ITSM headache.
+        </p>
+        <ul class="sd-feature-list">
+          <li><i class="bi bi-check2-circle"></i> Link tickets to problems</li>
+          <li><i class="bi bi-check2-circle"></i> Risk-scored change requests</li>
+          <li><i class="bi bi-check2-circle"></i> Scheduled maintenance windows</li>
+        </ul>
+      </div>
+      <div class="sd-feature-visual">
+        <div class="sd-mini-card">
+          <div class="sd-mini-card-header"><i class="bi bi-arrow-repeat"></i> Change request</div>
+          <div class="sd-mini-card-row">Upgrade payment gateway SDK</div>
+          <div class="sd-mini-card-row"><span class="sd-mock-pill sd-pill-medium">Risk: Medium</span></div>
+          <div class="sd-mini-card-row sd-mini-card-arrow"><i class="bi bi-calendar-event"></i> Scheduled for Sat 2:00 AM</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%- include('partials/home-cta') %>
+</main>
+<%- include('partials/footer') %>

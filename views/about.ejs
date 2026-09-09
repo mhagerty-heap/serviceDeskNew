@@ -1,0 +1,35 @@
+<%- include('partials/head', { title: 'About' }) %>
+<%- include('partials/nav') %>
+<main>
+  <%- include('partials/flash') %>
+  <section class="sd-page-header">
+    <div class="sd-page-header-inner">
+      <h1>Support software built by support people</h1>
+      <p>We started ServiceDesk after a decade of drowning in shared inboxes and spreadsheets.</p>
+    </div>
+  </section>
+
+  <section class="sd-about-body">
+    <div class="sd-about-body-inner">
+      <p>
+        ServiceDesk began as an internal tool for a 12-person IT team that had outgrown
+        email. Today it helps support and IT teams of every size route, resolve, and
+        report on the work that keeps their companies running &mdash; without the setup
+        time of legacy ITSM platforms.
+      </p>
+      <p>
+        We believe good support software should get out of the way: fast to set up,
+        simple for agents, and clear for the managers who have to report on it.
+      </p>
+
+      <div class="sd-about-stats">
+        <div class="sd-about-stat"><strong>2,400+</strong><span>Teams supported</span></div>
+        <div class="sd-about-stat"><strong>4.2M</strong><span>Tickets resolved</span></div>
+        <div class="sd-about-stat"><strong>98%</strong><span>Average CSAT</span></div>
+      </div>
+    </div>
+  </section>
+
+  <%- include('partials/home-cta') %>
+</main>
+<%- include('partials/footer') %>

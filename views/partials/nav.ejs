@@ -1,0 +1,30 @@
+<nav class="sd-nav">
+  <div class="sd-nav-inner">
+    <a class="sd-logo" href="/">
+      <span class="sd-logo-mark"><i class="bi bi-life-preserver"></i></span>
+      ServiceDesk
+    </a>
+
+    <div class="sd-nav-links">
+      <a href="/features">Features</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/kb">Knowledge Base</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </div>
+
+    <div class="sd-nav-actions">
+      <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+        <a class="sd-nav-ticket-count" href="/portal">
+          <i class="bi bi-ticket-perforated"></i>
+          <% if (openTicketCount > 0) { %><span class="sd-badge"><%= openTicketCount %></span><% } %>
+        </a>
+        <a class="btn btn-sd-outline" href="/portal">Dashboard</a>
+        <a class="btn btn-sd-primary" href="/logout">Log out</a>
+      <% } else { %>
+        <a class="btn btn-sd-outline" href="/login">Log in</a>
+        <a class="btn btn-sd-primary" href="/contact">Request a demo</a>
+      <% } %>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,33 @@
+<%- include('../../partials/admin-head', { title: 'Tickets' }) %>
+<% const activePage = 'tickets'; %>
+<%- include('../sidebar') %>
+  <div class="sd-admin-topbar"><h1>Tickets</h1></div>
+  <div class="sd-admin-content">
+    <%- include('../../partials/flash') %>
+    <form method="GET" action="/admin/tickets" class="sd-filter-bar">
+      <input type="text" name="q" placeholder="Search tickets..." value="<%= filters.q || '' %>">
+      <select name="status">
+        <option value="">Any status</option>
+        <% ['open','pending','resolved','closed'].forEach(function(s) { %>
+          <option value="<%= s %>" <%= filters.status === s ? 'selected' : '' %>><%= s %></option>
+        <% }) %>
+      </select>
+      <button type="submit" class="btn btn-sd-outline">Filter</button>
+    </form>
+    <table class="sd-table">
+      <thead><tr><th>Subject</th><th>Status</th><th>Priority</th><th>Requester</th><th>Assignee</th></tr></thead>
+      <tbody>
+        <% tickets.forEach(function(t) { %>
+          <tr onclick="window.location='/admin/tickets/<%= t.id %>'">
+            <td><%= t.subject %></td>
+            <td><span class="sd-mock-pill sd-pill-<%= t.status %>"><%= t.status %></span></td>
+            <td><span class="sd-mock-pill sd-pill-<%= t.priority %>"><%= t.priority %></span></td>
+            <td><%= t.requester_name %></td>
+            <td><%= t.assignee_name || 'Unassigned' %></td>
+          </tr>
+        <% }) %>
+        <% if (tickets.length === 0) { %><tr><td colspan="5" class="sd-table-empty">No tickets found.</td></tr><% } %>
+      </tbody>
+    </table>
+  </div>
+<%- include('../../partials/admin-scripts') %>

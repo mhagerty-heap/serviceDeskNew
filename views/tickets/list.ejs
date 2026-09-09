@@ -1,0 +1,78 @@
+<%- include('../partials/head', { title: 'Tickets' }) %>
+<%- include('../partials/nav') %>
+<main>
+  <section class="sd-portal-header">
+    <div class="sd-portal-header-inner">
+      <h1>Tickets</h1>
+      <p><%= isAgent ? 'All tickets across the team.' : 'Your support requests.' %></p>
+    </div>
+  </section>
+
+  <section class="sd-portal-body">
+    <div class="sd-portal-body-inner">
+      <%- include('../partials/flash') %>
+
+      <form method="GET" action="/tickets" class="sd-filter-bar">
+        <input type="text" name="q" placeholder="Search tickets..." value="<%= filters.q || '' %>">
+        <select name="status">
+          <option value="">Any status</option>
+          <% ['open','pending','resolved','closed'].forEach(function(s) { %>
+            <option value="<%= s %>" <%= filters.status === s ? 'selected' : '' %>><%= s %></option>
+          <% }) %>
+        </select>
+        <select name="priority">
+          <option value="">Any priority</option>
+          <% ['low','medium','high','urgent'].forEach(function(p) { %>
+            <option value="<%= p %>" <%= filters.priority === p ? 'selected' : '' %>><%= p %></option>
+          <% }) %>
+        </select>
+        <% if (isAgent) { %>
+        <select name="department">
+          <option value="">Any department</option>
+          <% departments.forEach(function(d) { %>
+            <option value="<%= d.id %>" <%= String(filters.department) === String(d.id) ? 'selected' : '' %>><%= d.name %></option>
+          <% }) %>
+        </select>
+        <% } %>
+        <button type="submit" class="btn btn-sd-outline">Filter</button>
+        <a href="/tickets/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New ticket</a>
+      </form>
+
+      <div class="sd-table-wrap">
+        <table class="sd-table">
+          <thead>
+            <tr><th>Subject</th><th>Status</th><th>Priority</th><th>Department</th><% if (isAgent) { %><th>Requester</th><th>Assignee</th><% } %><th>Updated</th></tr>
+          </thead>
+          <tbody>
+            <% tickets.forEach(function(t) { %>
+              <tr onclick="window.location='/tickets/<%= t.id %>'">
+                <td><%= t.subject %></td>
+                <td><span class="sd-mock-pill sd-pill-<%= t.status %>"><%= t.status %></span></td>
+                <td><span class="sd-mock-pill sd-pill-<%= t.priority %>"><%= t.priority %></span></td>
+                <td><%= t.department_name || '&mdash;' %></td>
+                <% if (isAgent) { %>
+                  <td><%= t.requester_name %></td>
+                  <td><%= t.assignee_name || 'Unassigned' %></td>
+                <% } %>
+                <td><%= t.updated_at %></td>
+              </tr>
+            <% }) %>
+            <% if (tickets.length === 0) { %>
+              <tr><td colspan="7" class="sd-table-empty">No tickets match your filters.</td></tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+
+      <% if (pagination.totalPages > 1) { %>
+        <div class="sd-pagination">
+          <% for (let p = 1; p <= pagination.totalPages; p++) { %>
+            <a href="?page=<%= p %>&status=<%= filters.status || '' %>&priority=<%= filters.priority || '' %>&q=<%= filters.q || '' %>"
+               class="<%= p === pagination.page ? 'active' : '' %>"><%= p %></a>
+          <% } %>
+        </div>
+      <% } %>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>

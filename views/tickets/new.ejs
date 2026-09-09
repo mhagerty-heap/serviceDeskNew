@@ -1,0 +1,47 @@
+<%- include('../partials/head', { title: 'New Ticket' }) %>
+<%- include('../partials/nav') %>
+<main>
+  <section class="sd-portal-header">
+    <div class="sd-portal-header-inner">
+      <h1>New ticket</h1>
+      <p>Tell us what's going on and we'll route it to the right team.</p>
+    </div>
+  </section>
+
+  <section class="sd-portal-body">
+    <div class="sd-portal-body-inner sd-narrow">
+      <%- include('../partials/flash') %>
+      <form method="POST" action="/tickets" class="sd-form">
+        <div class="sd-form-row">
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" name="subject" required>
+        </div>
+        <div class="sd-form-row">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" rows="5" required></textarea>
+        </div>
+        <div class="sd-form-row-group">
+          <div class="sd-form-row">
+            <label for="department_id">Department</label>
+            <select id="department_id" name="department_id">
+              <% departments.forEach(function(d) { %>
+                <option value="<%= d.id %>"><%= d.name %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="sd-form-row">
+            <label for="priority">Priority</label>
+            <select id="priority" name="priority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-sd-primary btn-lg w-100">Submit ticket</button>
+      </form>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>
