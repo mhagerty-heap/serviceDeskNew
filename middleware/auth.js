@@ -22,14 +22,14 @@ function requireAuth(req, res, next) {
 
 function requireAgent(req, res, next) {
   if (!res.locals.currentUser || !['agent', 'admin'].includes(res.locals.currentUser.role)) {
-    return res.status(403).render('error', { title: 'Forbidden', message: 'Access denied. Agents only.', status: 403 });
+    return res.status(403).render('admin/forbidden', { title: 'Forbidden', message: 'Access denied. Agents only.' });
   }
   next();
 }
 
 function requireAdmin(req, res, next) {
   if (!res.locals.currentUser || res.locals.currentUser.role !== 'admin') {
-    return res.status(403).render('error', { title: 'Forbidden', message: 'Access denied. Admin only.', status: 403 });
+    return res.status(403).render('admin/forbidden', { title: 'Forbidden', message: 'Access denied. Admin only.' });
   }
   next();
 }

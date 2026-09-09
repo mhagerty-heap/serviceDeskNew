@@ -8,8 +8,10 @@
     <a href="/admin/problems" class="<%= typeof activePage !== 'undefined' && activePage === 'problems' ? 'active' : '' %>"><i class="bi bi-exclamation-diamond"></i> Problems</a>
     <a href="/admin/changes" class="<%= typeof activePage !== 'undefined' && activePage === 'changes' ? 'active' : '' %>"><i class="bi bi-arrow-repeat"></i> Changes</a>
     <a href="/admin/articles" class="<%= typeof activePage !== 'undefined' && activePage === 'articles' ? 'active' : '' %>"><i class="bi bi-journal-text"></i> Knowledge Base</a>
-    <a href="/admin/agents" class="<%= typeof activePage !== 'undefined' && activePage === 'agents' ? 'active' : '' %>"><i class="bi bi-people"></i> Agents</a>
-    <a href="/admin/departments" class="<%= typeof activePage !== 'undefined' && activePage === 'departments' ? 'active' : '' %>"><i class="bi bi-diagram-3"></i> Departments</a>
+    <% if (typeof currentUser !== 'undefined' && currentUser && currentUser.role === 'admin') { %>
+      <a href="/admin/agents" class="<%= typeof activePage !== 'undefined' && activePage === 'agents' ? 'active' : '' %>"><i class="bi bi-people"></i> Agents</a>
+      <a href="/admin/departments" class="<%= typeof activePage !== 'undefined' && activePage === 'departments' ? 'active' : '' %>"><i class="bi bi-diagram-3"></i> Departments</a>
+    <% } %>
   </div>
   <div class="sd-admin-nav-footer">
     <a href="/"><i class="bi bi-box-arrow-left"></i> View site</a>

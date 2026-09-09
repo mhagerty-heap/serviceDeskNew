@@ -1,0 +1,10 @@
+<%- include('../partials/admin-head', { title: 'Forbidden' }) %>
+<%- include('sidebar', { activePage: typeof activePage !== 'undefined' ? activePage : '' }) %>
+  <div class="sd-admin-topbar"><h1>Access denied</h1></div>
+  <div class="sd-admin-content">
+    <div class="sd-admin-panel sd-narrow">
+      <p><%= message %></p>
+      <a href="/admin" class="btn btn-sd-primary">Back to dashboard</a>
+    </div>
+  </div>
+<%- include('../partials/admin-scripts') %>
