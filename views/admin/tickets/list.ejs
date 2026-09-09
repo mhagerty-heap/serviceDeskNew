@@ -1,6 +1,9 @@
 <%- include('../../partials/admin-head', { title: 'Tickets' }) %>
 <%- include('../sidebar', { activePage: 'tickets' }) %>
-  <div class="sd-admin-topbar"><h1>Tickets</h1></div>
+  <div class="sd-admin-topbar">
+    <h1>Tickets</h1>
+    <a href="/tickets/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New ticket</a>
+  </div>
   <div class="sd-admin-content">
     <%- include('../../partials/flash') %>
     <form method="GET" action="/admin/tickets" class="sd-filter-bar">
