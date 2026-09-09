@@ -1,0 +1,29 @@
+<%- include('../../partials/admin-head', { title: change.title }) %>
+<%- include('../sidebar', { activePage: 'changes' }) %>
+  <div class="sd-admin-topbar">
+    <h1>#<%= change.id %> &mdash; <%= change.title %></h1>
+    <div class="sd-ticket-meta">
+      <span class="sd-mock-pill sd-pill-<%= change.status %>"><%= change.status %></span>
+      <span class="sd-mock-pill sd-pill-<%= change.risk_level %>">Risk: <%= change.risk_level %></span>
+    </div>
+  </div>
+  <div class="sd-admin-content">
+    <%- include('../../partials/flash') %>
+    <div class="sd-admin-panel sd-narrow">
+      <h3>Description</h3>
+      <p><%= change.description %></p>
+      <span class="sd-ticket-submeta">Scheduled for <%= change.scheduled_at || 'not yet scheduled' %></span>
+    </div>
+    <form method="POST" action="/admin/changes/<%= change.id %>/update" class="sd-form sd-narrow" style="margin-top:20px;">
+      <div class="sd-form-row">
+        <label for="status">Status</label>
+        <select id="status" name="status">
+          <% ['planning','scheduled','completed','rolled_back'].forEach(function(s) { %>
+            <option value="<%= s %>" <%= change.status === s ? 'selected' : '' %>><%= s %></option>
+          <% }) %>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-sd-primary">Save changes</button>
+    </form>
+  </div>
+<%- include('../../partials/admin-scripts') %>

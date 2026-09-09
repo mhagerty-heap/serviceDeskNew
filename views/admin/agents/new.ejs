@@ -1,6 +1,5 @@
 <%- include('../../partials/admin-head', { title: 'New Agent' }) %>
-<% const activePage = 'agents'; %>
-<%- include('../sidebar') %>
+<%- include('../sidebar', { activePage: 'agents' }) %>
   <div class="sd-admin-topbar"><h1>New agent</h1></div>
   <div class="sd-admin-content">
     <%- include('../../partials/flash') %>

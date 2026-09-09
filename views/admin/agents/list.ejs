@@ -1,6 +1,5 @@
 <%- include('../../partials/admin-head', { title: 'Agents' }) %>
-<% const activePage = 'agents'; %>
-<%- include('../sidebar') %>
+<%- include('../sidebar', { activePage: 'agents' }) %>
   <div class="sd-admin-topbar">
     <h1>Agents</h1>
     <a href="/admin/agents/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New agent</a>

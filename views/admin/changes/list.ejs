@@ -1,0 +1,24 @@
+<%- include('../../partials/admin-head', { title: 'Changes' }) %>
+<%- include('../sidebar', { activePage: 'changes' }) %>
+  <div class="sd-admin-topbar">
+    <h1>Changes</h1>
+    <a href="/admin/changes/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New change</a>
+  </div>
+  <div class="sd-admin-content">
+    <%- include('../../partials/flash') %>
+    <table class="sd-table">
+      <thead><tr><th>Title</th><th>Status</th><th>Risk</th><th>Scheduled</th></tr></thead>
+      <tbody>
+        <% changes.forEach(function(c) { %>
+          <tr onclick="window.location='/admin/changes/<%= c.id %>'">
+            <td><%= c.title %></td>
+            <td><span class="sd-mock-pill sd-pill-<%= c.status %>"><%= c.status %></span></td>
+            <td><span class="sd-mock-pill sd-pill-<%= c.risk_level %>"><%= c.risk_level %></span></td>
+            <td><%= c.scheduled_at || '&mdash;' %></td>
+          </tr>
+        <% }) %>
+        <% if (changes.length === 0) { %><tr><td colspan="4" class="sd-table-empty">No changes scheduled.</td></tr><% } %>
+      </tbody>
+    </table>
+  </div>
+<%- include('../../partials/admin-scripts') %>

@@ -1,6 +1,5 @@
 <%- include('../../partials/admin-head', { title: 'Departments' }) %>
-<% const activePage = 'departments'; %>
-<%- include('../sidebar') %>
+<%- include('../sidebar', { activePage: 'departments' }) %>
   <div class="sd-admin-topbar"><h1>Departments</h1></div>
   <div class="sd-admin-content">
     <%- include('../../partials/flash') %>

@@ -1,6 +1,5 @@
 <%- include('../../partials/admin-head', { title: 'Knowledge Base' }) %>
-<% const activePage = 'articles'; %>
-<%- include('../sidebar') %>
+<%- include('../sidebar', { activePage: 'articles' }) %>
   <div class="sd-admin-topbar">
     <h1>Knowledge Base</h1>
     <a href="/admin/articles/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New article</a>
