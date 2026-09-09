@@ -20,7 +20,7 @@
           <thead><tr><th>Subject</th><th>Status</th><th>Priority</th><th>Requester</th></tr></thead>
           <tbody>
             <% recentTickets.forEach(function(t) { %>
-              <tr onclick="window.location='/admin/tickets/<%= t.id %>'">
+              <tr id="ticket-row-<%= t.id %>" onclick="window.location='/admin/tickets/<%= t.id %>'">
                 <td><%= t.subject %></td>
                 <td><span class="sd-mock-pill sd-pill-<%= t.status %>"><%= t.status %></span></td>
                 <td><span class="sd-mock-pill sd-pill-<%= t.priority %>"><%= t.priority %></span></td>
@@ -38,7 +38,7 @@
         <% } %>
         <ul class="sd-admin-list">
           <% slaRisk.forEach(function(t) { %>
-            <li onclick="window.location='/admin/tickets/<%= t.id %>'">
+            <li id="sla-risk-row-<%= t.id %>" onclick="window.location='/admin/tickets/<%= t.id %>'">
               <span class="sd-mock-pill sd-pill-urgent">Urgent</span> <%= t.subject %>
             </li>
           <% }) %>

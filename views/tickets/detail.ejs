@@ -27,7 +27,7 @@
           <h3 class="sd-portal-subhead">Activity</h3>
           <div class="sd-comment-list">
             <% comments.forEach(function(c) { %>
-              <div class="sd-comment <%= c.is_internal_note ? 'sd-comment-internal' : '' %>">
+              <div id="comment-<%= c.id %>" class="sd-comment <%= c.is_internal_note ? 'sd-comment-internal' : '' %>">
                 <div class="sd-avatar sd-avatar-sm"><%= c.author_name.slice(0,2).toUpperCase() %></div>
                 <div class="sd-comment-body">
                   <div class="sd-comment-header">
@@ -42,22 +42,22 @@
             <% if (comments.length === 0) { %><p class="sd-table-empty">No activity yet.</p><% } %>
           </div>
 
-          <form method="POST" action="/tickets/<%= ticket.id %>/comments" class="sd-form">
+          <form id="form-ticket-comment" method="POST" action="/tickets/<%= ticket.id %>/comments" class="sd-form">
             <div class="sd-form-row">
               <label for="body">Add a reply</label>
               <textarea id="body" name="body" rows="3" required></textarea>
             </div>
             <% if (isAgent) { %>
-              <label class="sd-checkbox-row"><input type="checkbox" name="is_internal_note" value="1"> Internal note (not visible to requester)</label>
+              <label class="sd-checkbox-row" for="is_internal_note"><input type="checkbox" id="is_internal_note" name="is_internal_note" value="1"> Internal note (not visible to requester)</label>
             <% } %>
-            <button type="submit" class="btn btn-sd-primary">Post reply</button>
+            <button id="btn-post-reply" type="submit" class="btn btn-sd-primary">Post reply</button>
           </form>
         </div>
 
         <% if (isAgent) { %>
         <div class="sd-ticket-sidebar">
           <h3>Manage ticket</h3>
-          <form method="POST" action="/tickets/<%= ticket.id %>/update" class="sd-form">
+          <form id="form-ticket-manage" method="POST" action="/tickets/<%= ticket.id %>/update" class="sd-form">
             <div class="sd-form-row">
               <label for="status">Status</label>
               <select id="status" name="status">
@@ -83,7 +83,7 @@
                 <% }) %>
               </select>
             </div>
-            <button type="submit" class="btn btn-sd-primary w-100">Save changes</button>
+            <button id="btn-save-ticket" type="submit" class="btn btn-sd-primary w-100">Save changes</button>
           </form>
         </div>
         <% } %>

@@ -5,9 +5,9 @@
     <div class="sd-page-header-inner">
       <h1>Knowledge Base</h1>
       <p>Answers to the questions our support team hears every day.</p>
-      <form method="GET" action="/kb" class="sd-kb-search">
-        <input type="text" name="q" placeholder="Search articles..." value="<%= q || '' %>">
-        <button type="submit" class="btn btn-sd-primary">Search</button>
+      <form id="form-kb-search" method="GET" action="/kb" class="sd-kb-search">
+        <input id="kb-search-input" type="text" name="q" placeholder="Search articles..." value="<%= q || '' %>">
+        <button id="btn-kb-search" type="submit" class="btn btn-sd-primary">Search</button>
       </form>
     </div>
   </section>
@@ -16,7 +16,7 @@
     <div class="sd-portal-body-inner">
       <div class="sd-kb-grid">
         <% articles.forEach(function(a) { %>
-          <a class="sd-kb-card" href="/kb/<%= a.slug %>">
+          <a id="kb-card-<%= a.slug %>" class="sd-kb-card" href="/kb/<%= a.slug %>">
             <span class="sd-kb-category"><%= a.category || 'General' %></span>
             <h3><%= a.title %></h3>
             <p><%= a.body.slice(0, 110) %>&hellip;</p>

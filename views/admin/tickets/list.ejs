@@ -2,25 +2,25 @@
 <%- include('../sidebar', { activePage: 'tickets' }) %>
   <div class="sd-admin-topbar">
     <h1>Tickets</h1>
-    <a href="/tickets/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New ticket</a>
+    <a id="btn-new-ticket" href="/tickets/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New ticket</a>
   </div>
   <div class="sd-admin-content">
     <%- include('../../partials/flash') %>
-    <form method="GET" action="/admin/tickets" class="sd-filter-bar">
-      <input type="text" name="q" placeholder="Search tickets..." value="<%= filters.q || '' %>">
-      <select name="status">
+    <form id="form-ticket-filter" method="GET" action="/admin/tickets" class="sd-filter-bar">
+      <input id="filter-q" type="text" name="q" placeholder="Search tickets..." value="<%= filters.q || '' %>">
+      <select id="filter-status" name="status">
         <option value="">Any status</option>
         <% ['open','pending','resolved','closed'].forEach(function(s) { %>
           <option value="<%= s %>" <%= filters.status === s ? 'selected' : '' %>><%= s %></option>
         <% }) %>
       </select>
-      <button type="submit" class="btn btn-sd-outline">Filter</button>
+      <button id="btn-filter-submit" type="submit" class="btn btn-sd-outline">Filter</button>
     </form>
     <table class="sd-table">
       <thead><tr><th>Subject</th><th>Status</th><th>Priority</th><th>Requester</th><th>Assignee</th></tr></thead>
       <tbody>
         <% tickets.forEach(function(t) { %>
-          <tr onclick="window.location='/admin/tickets/<%= t.id %>'">
+          <tr id="ticket-row-<%= t.id %>" onclick="window.location='/admin/tickets/<%= t.id %>'">
             <td><%= t.subject %></td>
             <td><span class="sd-mock-pill sd-pill-<%= t.status %>"><%= t.status %></span></td>
             <td><span class="sd-mock-pill sd-pill-<%= t.priority %>"><%= t.priority %></span></td>

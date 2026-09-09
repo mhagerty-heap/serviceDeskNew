@@ -3,7 +3,7 @@
   <div class="sd-admin-topbar"><h1>New agent</h1></div>
   <div class="sd-admin-content">
     <%- include('../../partials/flash') %>
-    <form method="POST" action="/admin/agents" class="sd-form sd-narrow">
+    <form id="form-new-agent" method="POST" action="/admin/agents" class="sd-form sd-narrow">
       <div class="sd-form-row">
         <label for="name">Name</label>
         <input type="text" id="name" name="name" required>
@@ -23,7 +23,7 @@
           <option value="admin">Admin</option>
         </select>
       </div>
-      <button type="submit" class="btn btn-sd-primary">Create agent</button>
+      <button id="btn-create-agent" type="submit" class="btn btn-sd-primary">Create agent</button>
     </form>
   </div>
 <%- include('../../partials/admin-scripts') %>

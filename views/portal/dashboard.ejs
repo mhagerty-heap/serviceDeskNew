@@ -20,9 +20,9 @@
       </div>
 
       <div class="sd-portal-actions">
-        <a href="/tickets/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New ticket</a>
-        <a href="/tickets" class="btn btn-sd-outline">View all tickets</a>
-        <% if (isAgent) { %><a href="/admin" class="btn btn-sd-outline">Go to admin</a><% } %>
+        <a id="btn-new-ticket" href="/tickets/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New ticket</a>
+        <a id="btn-view-all-tickets" href="/tickets" class="btn btn-sd-outline">View all tickets</a>
+        <% if (isAgent) { %><a id="btn-go-to-admin" href="/admin" class="btn btn-sd-outline">Go to admin</a><% } %>
       </div>
 
       <h2 class="sd-portal-subhead"><%= isAgent ? 'Recent tickets' : 'My recent tickets' %></h2>
@@ -33,7 +33,7 @@
           </thead>
           <tbody>
             <% recentTickets.forEach(function(t) { %>
-              <tr onclick="window.location='/tickets/<%= t.id %>'">
+              <tr id="ticket-row-<%= t.id %>" onclick="window.location='/tickets/<%= t.id %>'">
                 <td><%= t.subject %></td>
                 <td><span class="sd-mock-pill sd-pill-<%= t.status %>"><%= t.status %></span></td>
                 <td><span class="sd-mock-pill sd-pill-<%= t.priority %>"><%= t.priority %></span></td>

@@ -12,30 +12,30 @@
     <div class="sd-portal-body-inner">
       <%- include('../partials/flash') %>
 
-      <form method="GET" action="/tickets" class="sd-filter-bar">
-        <input type="text" name="q" placeholder="Search tickets..." value="<%= filters.q || '' %>">
-        <select name="status">
+      <form id="form-ticket-filter" method="GET" action="/tickets" class="sd-filter-bar">
+        <input id="filter-q" type="text" name="q" placeholder="Search tickets..." value="<%= filters.q || '' %>">
+        <select id="filter-status" name="status">
           <option value="">Any status</option>
           <% ['open','pending','resolved','closed'].forEach(function(s) { %>
             <option value="<%= s %>" <%= filters.status === s ? 'selected' : '' %>><%= s %></option>
           <% }) %>
         </select>
-        <select name="priority">
+        <select id="filter-priority" name="priority">
           <option value="">Any priority</option>
           <% ['low','medium','high','urgent'].forEach(function(p) { %>
             <option value="<%= p %>" <%= filters.priority === p ? 'selected' : '' %>><%= p %></option>
           <% }) %>
         </select>
         <% if (isAgent) { %>
-        <select name="department">
+        <select id="filter-department" name="department">
           <option value="">Any department</option>
           <% departments.forEach(function(d) { %>
             <option value="<%= d.id %>" <%= String(filters.department) === String(d.id) ? 'selected' : '' %>><%= d.name %></option>
           <% }) %>
         </select>
         <% } %>
-        <button type="submit" class="btn btn-sd-outline">Filter</button>
-        <a href="/tickets/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New ticket</a>
+        <button id="btn-filter-submit" type="submit" class="btn btn-sd-outline">Filter</button>
+        <a id="btn-new-ticket" href="/tickets/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New ticket</a>
       </form>
 
       <div class="sd-table-wrap">
@@ -45,7 +45,7 @@
           </thead>
           <tbody>
             <% tickets.forEach(function(t) { %>
-              <tr onclick="window.location='/tickets/<%= t.id %>'">
+              <tr id="ticket-row-<%= t.id %>" onclick="window.location='/tickets/<%= t.id %>'">
                 <td><%= t.subject %></td>
                 <td><span class="sd-mock-pill sd-pill-<%= t.status %>"><%= t.status %></span></td>
                 <td><span class="sd-mock-pill sd-pill-<%= t.priority %>"><%= t.priority %></span></td>
@@ -67,7 +67,7 @@
       <% if (pagination.totalPages > 1) { %>
         <div class="sd-pagination">
           <% for (let p = 1; p <= pagination.totalPages; p++) { %>
-            <a href="?page=<%= p %>&status=<%= filters.status || '' %>&priority=<%= filters.priority || '' %>&q=<%= filters.q || '' %>"
+            <a id="page-link-<%= p %>" href="?page=<%= p %>&status=<%= filters.status || '' %>&priority=<%= filters.priority || '' %>&q=<%= filters.q || '' %>"
                class="<%= p === pagination.page ? 'active' : '' %>"><%= p %></a>
           <% } %>
         </div>

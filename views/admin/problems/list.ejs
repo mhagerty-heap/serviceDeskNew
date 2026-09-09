@@ -2,7 +2,7 @@
 <%- include('../sidebar', { activePage: 'problems' }) %>
   <div class="sd-admin-topbar">
     <h1>Problems</h1>
-    <a href="/admin/problems/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New problem</a>
+    <a id="btn-new-problem" href="/admin/problems/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New problem</a>
   </div>
   <div class="sd-admin-content">
     <%- include('../../partials/flash') %>
@@ -10,7 +10,7 @@
       <thead><tr><th>Title</th><th>Status</th><th>Opened</th></tr></thead>
       <tbody>
         <% problems.forEach(function(p) { %>
-          <tr onclick="window.location='/admin/problems/<%= p.id %>'">
+          <tr id="problem-row-<%= p.id %>" onclick="window.location='/admin/problems/<%= p.id %>'">
             <td><%= p.title %></td>
             <td><span class="sd-mock-pill sd-pill-<%= p.status %>"><%= p.status %></span></td>
             <td><%= p.created_at %></td>

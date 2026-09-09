@@ -14,7 +14,7 @@
       <p><%= change.description %></p>
       <span class="sd-ticket-submeta">Scheduled for <%= change.scheduled_at || 'not yet scheduled' %></span>
     </div>
-    <form method="POST" action="/admin/changes/<%= change.id %>/update" class="sd-form sd-narrow" style="margin-top:20px;">
+    <form id="form-change-update" method="POST" action="/admin/changes/<%= change.id %>/update" class="sd-form sd-narrow" style="margin-top:20px;">
       <div class="sd-form-row">
         <label for="status">Status</label>
         <select id="status" name="status">
@@ -23,7 +23,7 @@
           <% }) %>
         </select>
       </div>
-      <button type="submit" class="btn btn-sd-primary">Save changes</button>
+      <button id="btn-save-change" type="submit" class="btn btn-sd-primary">Save changes</button>
     </form>
   </div>
 <%- include('../../partials/admin-scripts') %>

@@ -2,7 +2,7 @@
 <%- include('../sidebar', { activePage: 'articles' }) %>
   <div class="sd-admin-topbar">
     <h1>Knowledge Base</h1>
-    <a href="/admin/articles/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New article</a>
+    <a id="btn-new-article" href="/admin/articles/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New article</a>
   </div>
   <div class="sd-admin-content">
     <%- include('../../partials/flash') %>
@@ -10,7 +10,7 @@
       <thead><tr><th>Title</th><th>Category</th><th>Published</th></tr></thead>
       <tbody>
         <% articles.forEach(function(a) { %>
-          <tr onclick="window.location='/kb/<%= a.slug %>'">
+          <tr id="article-row-<%= a.slug %>" onclick="window.location='/kb/<%= a.slug %>'">
             <td><%= a.title %></td>
             <td><%= a.category || '&mdash;' %></td>
             <td><%= a.published_at %></td>

@@ -1,29 +1,29 @@
 <nav class="sd-nav">
   <div class="sd-nav-inner">
-    <a class="sd-logo" href="/">
+    <a id="nav-logo" class="sd-logo" href="/">
       <span class="sd-logo-mark"><i class="bi bi-life-preserver"></i></span>
       ServiceDesk
     </a>
 
     <div class="sd-nav-links">
-      <a href="/features">Features</a>
-      <a href="/pricing">Pricing</a>
-      <a href="/kb">Knowledge Base</a>
-      <a href="/about">About</a>
-      <a href="/contact">Contact</a>
+      <a id="nav-link-features" href="/features">Features</a>
+      <a id="nav-link-pricing" href="/pricing">Pricing</a>
+      <a id="nav-link-kb" href="/kb">Knowledge Base</a>
+      <a id="nav-link-about" href="/about">About</a>
+      <a id="nav-link-contact" href="/contact">Contact</a>
     </div>
 
     <div class="sd-nav-actions">
       <% if (typeof currentUser !== 'undefined' && currentUser) { %>
-        <a class="sd-nav-ticket-count" href="/portal">
+        <a id="nav-ticket-count" class="sd-nav-ticket-count" href="/portal">
           <i class="bi bi-ticket-perforated"></i>
           <% if (openTicketCount > 0) { %><span class="sd-badge"><%= openTicketCount %></span><% } %>
         </a>
-        <a class="btn btn-sd-outline" href="/portal">Dashboard</a>
-        <a class="btn btn-sd-primary" href="/logout">Log out</a>
+        <a id="nav-dashboard-link" class="btn btn-sd-outline" href="/portal">Dashboard</a>
+        <a id="nav-logout-link" class="btn btn-sd-primary" href="/logout">Log out</a>
       <% } else { %>
-        <a class="btn btn-sd-outline" href="/login">Log in</a>
-        <a class="btn btn-sd-primary" href="/contact">Request a demo</a>
+        <a id="nav-login-link" class="btn btn-sd-outline" href="/login">Log in</a>
+        <a id="nav-demo-link" class="btn btn-sd-primary" href="/contact">Request a demo</a>
       <% } %>
     </div>
   </div>

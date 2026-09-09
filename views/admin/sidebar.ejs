@@ -1,21 +1,21 @@
 <nav class="sd-admin-sidebar">
-  <a class="sd-logo sd-logo-light" href="/admin">
+  <a id="sidebar-logo" class="sd-logo sd-logo-light" href="/admin">
     <span class="sd-logo-mark"><i class="bi bi-life-preserver"></i></span> ServiceDesk
   </a>
   <div class="sd-admin-nav">
-    <a href="/admin" class="<%= typeof activePage !== 'undefined' && activePage === 'dashboard' ? 'active' : '' %>"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a>
-    <a href="/admin/tickets" class="<%= typeof activePage !== 'undefined' && activePage === 'tickets' ? 'active' : '' %>"><i class="bi bi-ticket-perforated"></i> Tickets</a>
-    <a href="/admin/problems" class="<%= typeof activePage !== 'undefined' && activePage === 'problems' ? 'active' : '' %>"><i class="bi bi-exclamation-diamond"></i> Problems</a>
-    <a href="/admin/changes" class="<%= typeof activePage !== 'undefined' && activePage === 'changes' ? 'active' : '' %>"><i class="bi bi-arrow-repeat"></i> Changes</a>
-    <a href="/admin/articles" class="<%= typeof activePage !== 'undefined' && activePage === 'articles' ? 'active' : '' %>"><i class="bi bi-journal-text"></i> Knowledge Base</a>
+    <a id="sidebar-dashboard" href="/admin" class="<%= typeof activePage !== 'undefined' && activePage === 'dashboard' ? 'active' : '' %>"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a>
+    <a id="sidebar-tickets" href="/admin/tickets" class="<%= typeof activePage !== 'undefined' && activePage === 'tickets' ? 'active' : '' %>"><i class="bi bi-ticket-perforated"></i> Tickets</a>
+    <a id="sidebar-problems" href="/admin/problems" class="<%= typeof activePage !== 'undefined' && activePage === 'problems' ? 'active' : '' %>"><i class="bi bi-exclamation-diamond"></i> Problems</a>
+    <a id="sidebar-changes" href="/admin/changes" class="<%= typeof activePage !== 'undefined' && activePage === 'changes' ? 'active' : '' %>"><i class="bi bi-arrow-repeat"></i> Changes</a>
+    <a id="sidebar-articles" href="/admin/articles" class="<%= typeof activePage !== 'undefined' && activePage === 'articles' ? 'active' : '' %>"><i class="bi bi-journal-text"></i> Knowledge Base</a>
     <% if (typeof currentUser !== 'undefined' && currentUser && currentUser.role === 'admin') { %>
-      <a href="/admin/agents" class="<%= typeof activePage !== 'undefined' && activePage === 'agents' ? 'active' : '' %>"><i class="bi bi-people"></i> Agents</a>
-      <a href="/admin/departments" class="<%= typeof activePage !== 'undefined' && activePage === 'departments' ? 'active' : '' %>"><i class="bi bi-diagram-3"></i> Departments</a>
+      <a id="sidebar-agents" href="/admin/agents" class="<%= typeof activePage !== 'undefined' && activePage === 'agents' ? 'active' : '' %>"><i class="bi bi-people"></i> Agents</a>
+      <a id="sidebar-departments" href="/admin/departments" class="<%= typeof activePage !== 'undefined' && activePage === 'departments' ? 'active' : '' %>"><i class="bi bi-diagram-3"></i> Departments</a>
     <% } %>
   </div>
   <div class="sd-admin-nav-footer">
-    <a href="/"><i class="bi bi-box-arrow-left"></i> View site</a>
-    <a href="/logout"><i class="bi bi-power"></i> Log out</a>
+    <a id="sidebar-view-site" href="/"><i class="bi bi-box-arrow-left"></i> View site</a>
+    <a id="sidebar-logout" href="/logout"><i class="bi bi-power"></i> Log out</a>
   </div>
 </nav>
 <div class="sd-admin-main">
