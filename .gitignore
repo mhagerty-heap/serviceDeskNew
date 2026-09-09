@@ -5,3 +5,14 @@ node_modules/
 *.db-wal
 .vercel
 .DS_Store
+
+# Selenium journey-simulation scripts and persona data live and get updated
+# locally; only scripts/seleniumScripts/README.md is tracked. (Ignoring the
+# directory's contents via /* rather than the directory itself so the
+# !README.md negation below actually works — git can't re-include a file
+# inside a wholesale-ignored directory.)
+scripts/csq_dual_injection.py
+scripts/seleniumScripts/*
+!scripts/seleniumScripts/README.md
+__pycache__/
+*.pyc

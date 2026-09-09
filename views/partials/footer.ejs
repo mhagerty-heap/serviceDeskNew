@@ -28,6 +28,18 @@
       <a id="footer-link-register" href="/register">Start free trial</a>
       <a id="footer-link-dashboard" href="/portal">Dashboard</a>
     </div>
+
+    <div class="sd-footer-col sd-footer-demo-tools">
+      <h5>Demo Tools</h5>
+      <a id="demo-reset-link" href="/demo/reset">Clear session</a>
+      <span class="sd-footer-demo-label">Demo Errors</span>
+      <a id="demo-error-ticket-submit" href="?demo=ticket-submit-error">Ticket submit error</a>
+      <a id="demo-error-kb-search" href="?demo=kb-search-error">KB search error</a>
+      <a id="demo-error-sla" href="?demo=sla-error">SLA calc error</a>
+      <a id="demo-error-notification" href="?demo=notification-error">Notification error</a>
+      <a id="demo-error-js-ticket" href="?demo=js-ticket-error">JS ticket error</a>
+      <a id="demo-error-js-notification" href="?demo=js-notification-error">JS notification error</a>
+    </div>
   </div>
 
   <div class="sd-footer-bottom">
@@ -37,5 +49,50 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/js/main.js"></script>
+<script>
+  (function () {
+    var demo = new URLSearchParams(window.location.search).get('demo');
+    if (!demo) return;
+
+    function fireApiError(path, body) {
+      fetch(path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body || {})
+      }).then(function (r) {
+        return r.json().then(function (data) {
+          if (!r.ok) {
+            var err = new Error(data.code + ': ' + data.message);
+            console.error('[SD-DEMO] API error:', err.message);
+            throw err;
+          }
+        });
+      }).catch(function (e) {
+        console.error('[SD-DEMO] API error:', e.message);
+      });
+    }
+
+    setTimeout(function () {
+      switch (demo) {
+        case 'ticket-submit-error':
+          fireApiError('/api/ticket-submit-error', { subject: 'demo_ticket' });
+          break;
+        case 'kb-search-error':
+          fireApiError('/api/kb-search-error', { query: 'demo_search' });
+          break;
+        case 'sla-error':
+          fireApiError('/api/sla-calculation-error', { ticket_id: 'demo_ticket' });
+          break;
+        case 'notification-error':
+          fireApiError('/api/notification-error', { ticket_id: 'demo_ticket' });
+          break;
+        case 'js-ticket-error':
+          throw new Error('TicketSubmitServiceUnavailable: upstream timeout after 30000ms');
+        case 'js-notification-error':
+          throw new Error('NotificationDispatcher: connection refused — please retry');
+      }
+    }, 1500);
+  })();
+</script>
 </body>
 </html>

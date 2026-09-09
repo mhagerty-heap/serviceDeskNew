@@ -54,6 +54,32 @@ app.use('/admin/departments', require('./routes/admin/departments'));
 app.use('/admin/articles', require('./routes/admin/articles'));
 app.use('/admin', require('./routes/admin/index'));
 
+// ---------------------------------------------------------------------------
+// Demo-only endpoints: always-fail JSON APIs used to inject realistic error
+// signals (via Selenium and the "Demo Errors" footer panel) for CSQ Error
+// Analysis. Each always returns the same non-2xx status + {code, message}.
+// ---------------------------------------------------------------------------
+app.get('/demo/reset', (req, res) => {
+  req.session = null;
+  res.redirect('/');
+});
+
+app.post('/api/ticket-submit-error', (req, res) => {
+  res.status(503).json({ code: 'TicketQueueUnavailable', message: 'The ticket queue is temporarily unavailable. Please try again shortly.' });
+});
+
+app.post('/api/kb-search-error', (req, res) => {
+  res.status(500).json({ code: 'SearchServiceError', message: 'Knowledge base search is temporarily unavailable.' });
+});
+
+app.post('/api/sla-calculation-error', (req, res) => {
+  res.status(502).json({ code: 'SlaEngineError', message: 'Could not calculate SLA targets for this ticket.' });
+});
+
+app.post('/api/notification-error', (req, res) => {
+  res.status(422).json({ code: 'NotificationDeliveryFailed', message: 'Notification could not be delivered to the assignee.' });
+});
+
 app.use((req, res) => {
   res.status(404).render('error', { title: 'Page not found', message: "We couldn't find that page.", status: 404 });
 });
