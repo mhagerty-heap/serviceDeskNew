@@ -8,8 +8,9 @@ The architecture deliberately mirrors another demo project (`ecommerce-main`): E
 
 ```bash
 npm install
-npm run seed   # wipes and reseeds demo data
-npm run dev    # starts on http://localhost:3003 (nodemon)
+npm run seed                 # wipes and reseeds demo data
+npm run seed-persona-users   # optional: adds 200 returning-user accounts for the Selenium journey script
+npm run dev                  # starts on http://localhost:3003 (nodemon)
 ```
 
 Demo logins (all password `password123`):
@@ -67,3 +68,33 @@ Every interactive element (buttons, links, forms, inputs, and clickable table/li
 - Clickable rows: `<resource>-row-<id>` (e.g. `ticket-row-42`) or `<resource>-<slug>` where there's no numeric id (e.g. `kb-card-<slug>`)
 
 Any new interactive element added to the codebase should follow the same convention.
+
+## Journey simulation (Selenium)
+
+A weighted-random behavioral-journey script (`scripts/seleniumScripts/svcDeskJourneyZoningFunnel.py`)
+drives a headless Chrome browser through named customer journeys — happy
+ticket resolution, KB self-service, browse-only, signup/demo-request
+abandonment, frustrated/error-heavy sessions, a broken-campaign rage bounce,
+and an independent AI-referral layer (ChatGPT/Gemini/Claude/Copilot/
+Perplexity) — tagging each session with ContentSquare custom variables/events.
+Only `scripts/seleniumScripts/README.md` is tracked in git; the script itself
+and the persona data are gitignored and set up locally per that README.
+
+Four always-fail demo API endpoints (`/api/ticket-submit-error`,
+`/api/kb-search-error`, `/api/sla-calculation-error`,
+`/api/notification-error`) plus two hardcoded JS errors back the script's
+error-injection paths, and are also reachable manually via the "Demo Errors"
+panel in the site footer (`?demo=...` query params) for testing without
+running the script.
+
+## Committing `servicedesk.db`
+
+The database runs in WAL mode — recent writes can sit in the (gitignored)
+`servicedesk.db-wal` file rather than the main `servicedesk.db` file, so a
+plain `git add servicedesk.db` can silently miss them. Before committing the
+db after seeding or other local writes, force a checkpoint first:
+
+```bash
+node -e "require('./config/database').pragma('wal_checkpoint(TRUNCATE)')"
+git add servicedesk.db
+```
