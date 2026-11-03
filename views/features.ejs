@@ -9,11 +9,11 @@
     </div>
   </section>
 
-  <%- include('partials/home-feature-1') %>
-  <%- include('partials/home-feature-2') %>
-  <%- include('partials/home-feature-3') %>
+  <div id="ticketing"><%- include('partials/home-feature-1') %></div>
+  <div id="knowledge-base"><%- include('partials/home-feature-2') %></div>
+  <div id="reporting"><%- include('partials/home-feature-3') %></div>
 
-  <section class="sd-feature">
+  <section id="problem-change" class="sd-feature">
     <div class="sd-feature-inner">
       <div class="sd-feature-copy">
         <span class="sd-eyebrow"><i class="bi bi-exclamation-diamond"></i> Problem &amp; change management</span>
@@ -39,6 +39,9 @@
       </div>
     </div>
   </section>
+
+  <div id="workspace"><%- include('partials/home-screenshot') %></div>
+  <div id="integrations"><%- include('partials/home-integrations') %></div>
 
   <%- include('partials/home-cta') %>
 </main>

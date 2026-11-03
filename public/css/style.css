@@ -323,3 +323,9 @@ ul { padding: 0; margin: 0; list-style: none; }
   .sd-showcase-sidebar { display: flex; overflow-x: auto; }
   .sd-admin-sidebar { display: none; }
 }
+
+/* ---- SECTION "LEARN MORE" LINKS ---- */
+.sd-learn-more { display: inline-block; margin-top: 16px; font-weight: 600; color: var(--primary); }
+.sd-learn-more:hover { color: var(--primary-dark); text-decoration: underline; }
+.sd-section-link-row { margin-top: 28px; text-align: center; }
+main [id] { scroll-margin-top: 72px; }
