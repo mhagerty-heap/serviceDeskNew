@@ -11,6 +11,7 @@
     <% if (typeof currentUser !== 'undefined' && currentUser && currentUser.role === 'admin') { %>
       <a id="sidebar-agents" href="/admin/agents" class="<%= typeof activePage !== 'undefined' && activePage === 'agents' ? 'active' : '' %>"><i class="bi bi-people"></i> Agents</a>
       <a id="sidebar-departments" href="/admin/departments" class="<%= typeof activePage !== 'undefined' && activePage === 'departments' ? 'active' : '' %>"><i class="bi bi-diagram-3"></i> Departments</a>
+      <a id="sidebar-agent-scenarios" href="/admin/agent-scenarios" class="<%= typeof activePage !== 'undefined' && activePage === 'agent-scenarios' ? 'active' : '' %>"><i class="bi bi-robot"></i> AI Assistant</a>
     <% } %>
   </div>
   <div class="sd-admin-nav-footer">

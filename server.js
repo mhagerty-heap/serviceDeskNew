@@ -43,6 +43,7 @@ app.use(injectLocals);
 
 app.use('/', require('./routes/index'));
 app.use('/', require('./routes/auth'));
+app.use('/', require('./routes/agentChat'));
 app.use('/tickets', require('./routes/tickets'));
 app.use('/kb', require('./routes/kb'));
 app.use('/portal', require('./routes/portal'));
@@ -52,6 +53,7 @@ app.use('/admin/changes', require('./routes/admin/changes'));
 app.use('/admin/agents', require('./routes/admin/agents'));
 app.use('/admin/departments', require('./routes/admin/departments'));
 app.use('/admin/articles', require('./routes/admin/articles'));
+app.use('/admin/agent-scenarios', require('./routes/admin/agent-scenarios'));
 app.use('/admin', require('./routes/admin/index'));
 
 // ---------------------------------------------------------------------------

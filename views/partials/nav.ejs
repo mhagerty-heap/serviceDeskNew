@@ -14,6 +14,11 @@
     </div>
 
     <div class="sd-nav-actions">
+      <%# AI assistant (scripted chat) — agent-widget.js unhides it and reads data-default-scenario %>
+      <a id="ai-agent-icon-link" class="sd-nav-ai-icon" href="#" title="AI Assistant" style="display:none;"
+         data-default-scenario="<%= typeof defaultAiScenarioSlug !== 'undefined' && defaultAiScenarioSlug ? defaultAiScenarioSlug : '' %>">
+        <i class="bi bi-robot"></i>
+      </a>
       <% if (typeof currentUser !== 'undefined' && currentUser) { %>
         <a id="nav-ticket-count" class="sd-nav-ticket-count" href="/portal">
           <i class="bi bi-ticket-perforated"></i>

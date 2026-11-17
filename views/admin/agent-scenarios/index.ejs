@@ -1,0 +1,48 @@
+<%- include('../../partials/admin-head', { title: 'AI Assistant' }) %>
+<%- include('../sidebar', { activePage: 'agent-scenarios' }) %>
+  <div class="sd-admin-topbar">
+    <h1>AI Assistant scenarios</h1>
+    <a id="btn-new-scenario" href="/admin/agent-scenarios/new" class="btn btn-sd-primary"><i class="bi bi-plus-lg"></i> New scenario</a>
+  </div>
+  <div class="sd-admin-content">
+    <%- include('../../partials/flash') %>
+    <div class="ai-admin-note">
+      The assistant icon shows site-wide and runs the scenario marked <strong>Default</strong>. Append
+      <code>?aiScenario=&lt;slug&gt;</code> to any URL to force a scenario for that browser session, or
+      <code>?aiScenario=assistant-off</code> to hide it. On Vercel the database is copied to a temp directory on each
+      cold start, so edit locally and commit <code>servicedesk.db</code> for changes to stick.
+    </div>
+    <table class="sd-table">
+      <thead><tr><th>Contact driver</th><th>Slug</th><th>Steps</th><th>Status</th><th>Default</th><th>Actions</th></tr></thead>
+      <tbody>
+        <% scenarios.forEach(function(s) { %>
+          <tr id="scenario-row-<%= s.id %>" style="cursor:default;">
+            <td><% if (s.driver_l3) { %><strong><%= s.driver_l3 %></strong><br><small style="color:var(--gray);"><%= s.driver_l1 %> › <%= s.driver_l2 %></small><% } else { %><%= s.name %><% } %><% if (s.slug === 'assistant-off') { %> <span class="sd-mock-pill sd-pill-medium">Reserved</span><% } %></td>
+            <td><a id="scenario-try-<%= s.id %>" href="/?aiScenario=<%= s.slug %>" target="_blank" rel="noopener"><code><%= s.slug %></code></a></td>
+            <td><%= s.step_count %></td>
+            <td><%= s.active ? 'Active' : 'Disabled' %></td>
+            <td>
+              <% if (s.is_default) { %>
+                <i class="bi bi-star-fill" title="Current default"></i> Default
+              <% } else { %>
+                <form method="POST" action="/admin/agent-scenarios/<%= s.id %>/set-default" style="display:inline;">
+                  <button id="btn-set-default-<%= s.id %>" type="submit" class="btn btn-sd-outline" title="Set as default"><i class="bi bi-star"></i></button>
+                </form>
+              <% } %>
+            </td>
+            <td>
+              <div class="ai-admin-actions">
+                <a id="btn-edit-scenario-<%= s.id %>" href="/admin/agent-scenarios/<%= s.id %>/edit" class="btn btn-sd-outline"><i class="bi bi-pencil"></i></a>
+                <% if (s.slug !== 'assistant-off') { %>
+                  <form method="POST" action="/admin/agent-scenarios/<%= s.id %>?_method=DELETE" onsubmit="return confirm('Delete this scenario?')" style="display:inline;">
+                    <button id="btn-delete-scenario-<%= s.id %>" type="submit" class="btn btn-sd-outline" title="Delete"><i class="bi bi-trash3"></i></button>
+                  </form>
+                <% } %>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+<%- include('../../partials/admin-scripts') %>

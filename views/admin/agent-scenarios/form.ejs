@@ -1,0 +1,44 @@
+<%- include('../../partials/admin-head', { title: title }) %>
+<%- include('../sidebar', { activePage: 'agent-scenarios' }) %>
+  <div class="sd-admin-topbar">
+    <h1><%= title %></h1>
+    <a id="btn-back-scenarios" href="/admin/agent-scenarios" class="btn btn-sd-outline"><i class="bi bi-arrow-left"></i> Back</a>
+  </div>
+  <div class="sd-admin-content">
+    <%- include('../../partials/flash') %>
+    <form id="scenario-form" method="POST" action="<%= scenario ? '/admin/agent-scenarios/' + scenario.id + '?_method=PUT' : '/admin/agent-scenarios' %>" class="sd-form sd-narrow" style="max-width:860px;">
+      <div class="sd-form-row-group">
+        <div class="sd-form-row">
+          <label for="scenario-name">Scenario name</label>
+          <input type="text" id="scenario-name" name="name" required value="<%= scenario ? scenario.name : '' %>">
+        </div>
+        <div class="sd-form-row">
+          <label for="scenario-slug">Slug</label>
+          <input type="text" id="scenario-slug" name="slug" value="<%= scenario ? scenario.slug : '' %>" <%= scenario && scenario.slug === 'assistant-off' ? 'readonly' : '' %>>
+        </div>
+      </div>
+      <div class="sd-form-row">
+        <label for="scenario-greeting">Greeting</label>
+        <textarea id="scenario-greeting" name="greeting_text" rows="2"><%= scenario ? scenario.greeting_text : "Hi! I'm the ServiceDesk assistant. How can I help?" %></textarea>
+      </div>
+      <div class="sd-form-row">
+        <label for="scenario-completion">Completion message (after the last step)</label>
+        <textarea id="scenario-completion" name="completion_text" rows="2"><%= scenario ? scenario.completion_text : 'If you need further assistance, please contact our support team!' %></textarea>
+      </div>
+      <label><input type="checkbox" id="scenario-active" name="active" value="1" <%= !scenario || scenario.active ? 'checked' : '' %>> Active</label>
+
+      <div class="ai-admin-note">
+        <strong>Free text</strong>: any user input advances to this step's response (content ignored).
+        <strong>Chips</strong>: buttons that each reply and branch to any step, or end the conversation.
+      </div>
+      <div id="stepsContainer"></div>
+      <div class="ai-admin-actions">
+        <button id="addStepBtn" type="button" class="btn btn-sd-outline"><i class="bi bi-plus-lg"></i> Add step</button>
+        <button id="btn-save-scenario" type="submit" class="btn btn-sd-primary"><%= scenario ? 'Update scenario' : 'Create scenario' %></button>
+      </div>
+    </form>
+  </div>
+<script id="initial-scenario-data" type="application/json"><%- JSON.stringify(scenario ? scenario.steps : []).replace(/</g, '\\u003c') %></script>
+<script>var slugEdited = <%= scenario ? 'true' : 'false' %>;</script>
+<script src="/js/admin-agent-scenario-form.js"></script>
+<%- include('../../partials/admin-scripts') %>

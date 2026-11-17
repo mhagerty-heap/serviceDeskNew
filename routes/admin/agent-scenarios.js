@@ -1,0 +1,159 @@
+const express = require('express');
+const router = express.Router();
+const db = require('../../config/database');
+const { requireAuth, requireAdmin } = require('../../middleware/auth');
+
+// 'assistant-off' is the widget's session-level off switch — never rename or delete.
+const RESERVED_SLUGS = ['assistant-off'];
+const DEFAULT_COMPLETION = 'If you need further assistance, please contact our support team!';
+
+function slugify(s) {
+  return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+function normalizeSteps(body) {
+  // steps[] arrives via qs bracket notation; each carries a client_id that
+  // chips' next_client_id values reference (the old DB id for existing steps,
+  // as a form-local key — save always deletes + reinserts).
+  const rawSteps = Array.isArray(body.steps) ? body.steps : Object.values(body.steps || {});
+  return rawSteps.map((step) => {
+    const mode = step.input_mode === 'chips' ? 'chips' : 'free_text';
+    const rawChips = Array.isArray(step.chips) ? step.chips : Object.values(step.chips || {});
+    return {
+      clientId: String(step.client_id || ''),
+      mode,
+      responseText: mode === 'free_text' ? (step.response_text || '') : null,
+      typingDelayMs: parseInt(step.typing_delay_ms, 10) || 1200,
+      chips: mode === 'chips'
+        ? rawChips.filter(c => c && c.label).map(c => ({ label: c.label, responseText: c.response_text || '', nextClientId: c.next_client_id || '' }))
+        : [],
+    };
+  }).filter(step => step.clientId);
+}
+
+const saveSteps = db.transaction((scenarioId, steps) => {
+  db.prepare('DELETE FROM agent_scenario_steps WHERE scenario_id = ?').run(scenarioId);
+  const insertStep = db.prepare(
+    'INSERT INTO agent_scenario_steps (scenario_id, sort_order, input_mode, response_text, typing_delay_ms) VALUES (?, ?, ?, ?, ?)'
+  );
+  const stepIdByClientId = new Map();
+  steps.forEach((step, i) => {
+    stepIdByClientId.set(step.clientId, insertStep.run(scenarioId, i, step.mode, step.responseText, step.typingDelayMs).lastInsertRowid);
+  });
+  const insertChip = db.prepare(
+    'INSERT INTO agent_scenario_chips (step_id, sort_order, label, response_text, next_step_id) VALUES (?, ?, ?, ?, ?)'
+  );
+  steps.forEach((step) => {
+    const stepId = stepIdByClientId.get(step.clientId);
+    step.chips.forEach((chip, j) => {
+      insertChip.run(stepId, j, chip.label, chip.responseText, chip.nextClientId ? (stepIdByClientId.get(chip.nextClientId) || null) : null);
+    });
+  });
+});
+
+function loadScenarioForForm(id) {
+  const scenario = db.prepare('SELECT * FROM agent_scenarios WHERE id = ?').get(id);
+  if (!scenario) return null;
+  const steps = db.prepare('SELECT * FROM agent_scenario_steps WHERE scenario_id = ? ORDER BY sort_order').all(id);
+  const chips = db.prepare(`
+    SELECT c.* FROM agent_scenario_chips c
+    JOIN agent_scenario_steps s ON s.id = c.step_id
+    WHERE s.scenario_id = ? ORDER BY c.step_id, c.sort_order
+  `).all(id);
+  scenario.steps = steps.map(step => ({
+    ...step,
+    clientId: String(step.id),
+    chips: chips.filter(c => c.step_id === step.id)
+      .map(c => ({ ...c, nextClientId: c.next_step_id != null ? String(c.next_step_id) : '' })),
+  }));
+  return scenario;
+}
+
+function uniqueSlug(base, excludeId) {
+  const existing = db.prepare('SELECT id FROM agent_scenarios WHERE slug = ? AND id != ?').get(base, excludeId || 0);
+  return existing ? base + '-' + Date.now() : base;
+}
+
+router.get('/', requireAuth, requireAdmin, (req, res) => {
+  const scenarios = db.prepare(`
+    SELECT s.*, (SELECT COUNT(*) FROM agent_scenario_steps WHERE scenario_id = s.id) AS step_count
+    FROM agent_scenarios s ORDER BY s.created_at DESC, s.id DESC
+  `).all();
+  res.render('admin/agent-scenarios/index', { title: 'AI Assistant', scenarios });
+});
+
+router.get('/new', requireAuth, requireAdmin, (req, res) => {
+  res.render('admin/agent-scenarios/form', { title: 'New scenario', scenario: null });
+});
+
+router.post('/', requireAuth, requireAdmin, (req, res) => {
+  const { name, slug: rawSlug, greeting_text, completion_text, active } = req.body;
+  if (!name) {
+    req.flash('error', 'Scenario name is required');
+    return res.redirect('/admin/agent-scenarios/new');
+  }
+  const slug = uniqueSlug(slugify(rawSlug || name) || 'scenario');
+  const { lastInsertRowid: id } = db.prepare(
+    'INSERT INTO agent_scenarios (name, slug, greeting_text, completion_text, active) VALUES (?, ?, ?, ?, ?)'
+  ).run(name, slug, greeting_text || '', completion_text || DEFAULT_COMPLETION, active ? 1 : 0);
+  saveSteps(id, normalizeSteps(req.body));
+  req.flash('success', 'Scenario created');
+  res.redirect('/admin/agent-scenarios');
+});
+
+router.get('/:id/edit', requireAuth, requireAdmin, (req, res) => {
+  const scenario = loadScenarioForForm(req.params.id);
+  if (!scenario) {
+    req.flash('error', 'Scenario not found');
+    return res.redirect('/admin/agent-scenarios');
+  }
+  res.render('admin/agent-scenarios/form', { title: 'Edit scenario', scenario });
+});
+
+router.put('/:id', requireAuth, requireAdmin, (req, res) => {
+  const id = req.params.id;
+  const { name, slug: rawSlug, greeting_text, completion_text, active } = req.body;
+  const current = db.prepare('SELECT slug FROM agent_scenarios WHERE id = ?').get(id);
+  if (!current) {
+    req.flash('error', 'Scenario not found');
+    return res.redirect('/admin/agent-scenarios');
+  }
+  const slug = RESERVED_SLUGS.includes(current.slug)
+    ? current.slug
+    : uniqueSlug(slugify(rawSlug || name) || 'scenario', id);
+  db.prepare('UPDATE agent_scenarios SET name=?, slug=?, greeting_text=?, completion_text=?, active=? WHERE id=?')
+    .run(name, slug, greeting_text || '', completion_text || DEFAULT_COMPLETION, active ? 1 : 0, id);
+  saveSteps(id, normalizeSteps(req.body));
+  req.flash('success', 'Scenario updated');
+  res.redirect('/admin/agent-scenarios');
+});
+
+router.delete('/:id', requireAuth, requireAdmin, (req, res) => {
+  const scenario = db.prepare('SELECT slug, is_default FROM agent_scenarios WHERE id = ?').get(req.params.id);
+  if (scenario && RESERVED_SLUGS.includes(scenario.slug)) {
+    req.flash('error', "This scenario is reserved by the widget and can't be deleted.");
+    return res.redirect('/admin/agent-scenarios');
+  }
+  if (scenario && scenario.is_default) {
+    req.flash('error', 'This is the current default scenario — set a different one as default before deleting it.');
+    return res.redirect('/admin/agent-scenarios');
+  }
+  db.prepare('DELETE FROM agent_scenarios WHERE id = ?').run(req.params.id);
+  req.flash('success', 'Scenario deleted');
+  res.redirect('/admin/agent-scenarios');
+});
+
+router.post('/:id/set-default', requireAuth, requireAdmin, (req, res) => {
+  if (!db.prepare('SELECT id FROM agent_scenarios WHERE id = ?').get(req.params.id)) {
+    req.flash('error', 'Scenario not found');
+    return res.redirect('/admin/agent-scenarios');
+  }
+  db.transaction(() => {
+    db.prepare('UPDATE agent_scenarios SET is_default = 0').run();
+    db.prepare('UPDATE agent_scenarios SET is_default = 1 WHERE id = ?').run(req.params.id);
+  })();
+  req.flash('success', 'Default scenario updated');
+  res.redirect('/admin/agent-scenarios');
+});
+
+module.exports = router;
